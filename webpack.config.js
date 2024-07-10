@@ -1,4 +1,5 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
+const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
@@ -27,12 +28,13 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        loaders: ['style-loader', 'css-loader'],
+        use: ['style-loader', 'css-loader'],
       }
     ],
   },
   resolve: {
     extensions: ["*", ".js", ".jsx"],
+    // Removed the fallback property
   },
   devServer: {
     historyApiFallback: true,
@@ -41,6 +43,10 @@ module.exports = {
     new HtmlWebPackPlugin({
       template: "./public/index.html",
       filename: "./index.html",
+    }),
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+      Buffer: ['buffer', 'Buffer'],
     }),
   ],
 };
